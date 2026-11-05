@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Q-RESCUE — Quantum Disaster Response Network</title>
+
+<style>
+:root{
+  --bg:#06111f;
+  --p:#0b1b2d;
+  --p2:#0e2338;
+  --l:#1b3b55;
+  --c:#32e6ff;
+  --g:#37e6a4;
+  --o:#ffb24c;
+  --r:#ff5f6d;
+  --t:#e9f7ff;
+  --m:#8eacc2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%,#12304b,#06111f 40%,#040b14);
+  color:var(--t);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+
+button,input{
+  font:inherit;
+}
+
+.top{
+  position:sticky;
+  top:0;
+  z-index:9;
+  background:#040d18ee;
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--l);
+}
+
+.nav{
+  max-width:1450px;
+  margin:auto;
+  padding:13px 22px;
+  display:flex;
+  align-items:center;
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:1.5px;
+  font-size:21px;
+  color:var(--c);
+}
+
+.logo small{
+  display:block;
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--m);
+}
+
+.status{
+  margin-left:auto;
+  display:flex;
+  gap:9px;
+}
+
+.pill{
+  border:1px solid var(--l);
+  background:#091a2a;
+  padding:7px 11px;
+  border-radius:99px;
+  font-size:11px;
+  color:#c9e8f7;
+}
+
+.live{
+  border-color:#1d8f76;
+  color:#6ff0bd;
+}
+
+.dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--g);
+  margin-right:5px;
+  box-shadow:0 0 10px var(--g);
+}
+
+.wrap{
+  max-width:1450px;
+  margin:auto;
+  padding:22px;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1.55fr .85fr;
+  gap:16px;
+}
+
+.card{
+  background:linear-gradient(145deg,#0d2338f5,#071422f5);
+  border:1px solid var(--l);
+  border-radius:18px;
+  box-shadow:0 12px 40px #0004;
+}
+
+.hero-main{
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-main:after{
+  content:"";
+  position:absolute;
+  right:-90px;
+  bottom:-150px;
+  width:390px;
+  height:390px;
+  border-radius:50%;
+  background:radial-gradient(circle,#32e6ff2e,transparent 65%);
+}
+
+.eyebrow{
+  font-size:10px;
+  color:var(--c);
+  letter-spacing:2px;
+  font-weight:800;
+}
+
+h1{
+  font-size:clamp(34px,4.5vw,58px);
+  margin:8px 0;
+  line-height:1;
+}
+
+.sub{
+  max-width:780px;
+  color:#a9c6d8;
+  line-height:1.65;
+}
+
+.cyan{
+  color:var(--c);
+}
+
+.actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.btn{
+  border:1px solid #2c607e;
+  background:#0c2940;
+  color:#dff8ff;
+  padding:9px 13px;
+  border-radius:10px;
+  font-weight:750;
+  cursor:pointer;
+}
+
+.btn.primary{
+  background:linear-gradient(90deg,#087f9c,#185bd0);
+  border-color:#35cde8;
+}
+
+.btn:hover{
+  filter:brightness(1.15);
+}
+
+.hero-side{
+  padding:20px;
+}
+
+.big{
+  font-size:40px;
+  font-weight:900;
+  color:var(--c);
+  margin-top:10px;
+}
+
+.muted{
+  color:var(--m);
+  font-size:11px;
+}
+
+.prog{
+  height:8px;
+  background:#071522;
+  border-radius:99px;
+  overflow:hidden;
+  margin:12px 0;
+}
+
+.prog i{
+  display:block;
+  height:100%;
+  width:72%;
+  background:linear-gradient(90deg,var(--c),var(--g));
+  border-radius:99px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+  margin-top:16px;
+}
+
+.stat{
+  padding:16px;
+  min-height:112px;
+}
+
+.value{
+  font-size:28px;
+  font-weight:900;
+  margin:7px 0 2px;
+}
+
+.green{
+  color:var(--g);
+}
+
+.orange{
+  color:var(--o);
+}
+
+.red{
+  color:var(--r);
+}
+
+.section{
+  margin-top:18px;
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:15px;
+}
+
+.panel{
+  padding:17px;
+}
+
+.title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.title h2{
+  font-size:17px;
+  margin:0;
+}
+
+.pipeline{
+  display:grid;
+  grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;
+  gap:7px;
+  align-items:center;
+}
+
+.node{
+  padding:12px 7px;
+  text-align:center;
+  border:1px solid #25516c;
+  border-radius:12px;
+  background:#091b2d;
+  font-size:11px;
+}
+
+.arrow{
+  color:var(--c);
+  font-weight:900;
+}
+
+.routebox{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.metric{
+  padding:13px;
+  border:1px solid var(--l);
+  border-radius:12px;
+  background:#081a2b;
+}
+
+.metric strong{
+  display:block;
+  font-size:22px;
+  margin:5px 0;
+}
+
+.telemetry{
+  height:175px;
+  overflow:auto;
+  background:#020a12;
+  border:1px solid #143147;
+  border-radius:12px;
+  padding:11px;
+  font:12px/1.8 ui-monospace,monospace;
+  color:#8eeeff;
+}
+
+.range{
+  width:100%;
+}
+
+.rainrow{
+  display:flex;
+  justify-content:space-between;
+  color:var(--m);
+  font-size:11px;
+}
+
+.radar{
+  height:315px;
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+
+  background:
+    repeating-radial-gradient(
+      circle at 52% 48%,
+      transparent 0 36px,
+      #32e6ff1d 37px 38px
+    ),
+    linear-gradient(
+      90deg,
+      transparent 49.7%,
+      #32e6ff22 50%,
+      transparent 50.3%
+    ),
+    linear-gradient(
+      0deg,
+      transparent 49.7%,
+      #32e6ff22 50%,
+      transparent 50.3%
+    ),
+    #061522;
+}
+
+.radar:before{
+  content:"";
+  position:absolute;
+  left:52%;
+  top:48%;
+  width:47%;
+  height:1px;
+  background:linear-gradient(90deg,var(--c),transparent);
+  transform-origin:left;
+  animation:sweep 3s linear infinite;
+}
+
+@keyframes sweep{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.zone{
+  position:absolute;
+  border:1px dashed #ff5f6d99;
+  background:#ff5f6d1a;
+  border-radius:50%;
+}
+
+.z1{
+  width:125px;
+  height:85px;
+  left:12%;
+  top:18%;
+}
+
+.z2{
+  width:170px;
+  height:110px;
+  right:9%;
+  bottom:18%;
+}
+
+.beacon{
+  position:absolute;
+  width:9px;
+  height:9px;
+  background:var(--o);
+  border-radius:50%;
+  box-shadow:0 0 15px var(--o);
+}
+
+.b1{
+  left:25%;
+  top:38%;
+}
+
+.b2{
+  left:68%;
+  top:27%;
+}
+
+.b3{
+  left:58%;
+  top:67%;
+}
+
+.b4{
+  left:36%;
+  top:73%;
+}
+
+.route-line{
+  position:absolute;
+  left:25%;
+  top:38%;
+  width:48%;
+  height:1px;
+  background:var(--g);
+  transform:rotate(14deg);
+  box-shadow:0 0 8px var(--g);
+}
+
+.resource{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.res{
+  border:1px solid var(--l);
+  padding:12px;
+  border-radius:12px;
+  background:#081a2b;
+}
+
+.reshead{
+  display:flex;
+  justify-content:space-between;
+}
+
+.rbar,
+.bar{
+  height:8px;
+  background:#071522;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.rbar{
+  margin-top:9px;
+}
+
+.rbar i,
+.bar i{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--g),var(--c));
+  border-radius:99px;
+}
+
+.barrow{
+  display:grid;
+  grid-template-columns:115px 1fr 55px;
+  gap:9px;
+  align-items:center;
+  margin:11px 0;
+  font-size:11px;
+}
+
+.alerts{
+  max-height:260px;
+  overflow:auto;
+}
+
+.alert{
+  display:grid;
+  grid-template-columns:32px 1fr auto;
+  gap:8px;
+  padding:12px;
+  border-bottom:1px solid var(--l);
+}
+
+.alert:last-child{
+  border:0;
+}
+
+.alert b{
+  font-size:12px;
+}
+
+.alert small{
+  color:var(--m);
+  font-size:10px;
+}
+
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:20;
+  background:#0d2940;
+  border:1px solid #2d6a86;
+  padding:12px 15px;
+  border-radius:11px;
+  box-shadow:0 12px 35px #0008;
+  display:none;
+}
+
+.footer{
+  text-align:center;
+  color:#68859a;
+  font-size:10px;
+  padding:22px 0;
+}
+
+.note{
+  margin-top:12px;
+  padding:11px;
+  border:1px dashed #28556e;
+  border-radius:10px;
+  color:var(--m);
+  font-size:11px;
+}
+
+@media(max-width:1050px){
+
+  .hero,
+  .two{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .pipeline{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .arrow{
+    display:none;
+  }
+}
+
+@media(max-width:650px){
+
+  .wrap{
+    padding:12px;
+  }
+
+  .stats,
+  .resource,
+  .routebox{
+    grid-template-columns:1fr;
+  }
+
+  .status{
+    display:none;
+  }
+
+  .hero-main{
+    padding:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+
+  <div class="nav">
+
+    <div class="logo">
+      Q-RESCUE
+      <small>QUANTUM DISASTER RESPONSE NETWORK</small>
+    </div>
+
+    <div class="status">
+
+      <div class="pill live">
+        <span class="dot"></span>
+        OFFLINE READY
+      </div>
+
+      <div class="pill">
+        GPS LOCK ±1.2m
+      </div>
+
+      <div class="pill">
+        AI CO-PILOT: LISTENING
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="wrap">
+
+<section class="hero">
+
+  <div class="card hero-main">
+
+    <div class="eyebrow">
+      QUANTATHON 2K26 • EMERGENCY OPERATIONS PROTOTYPE
+    </div>
+
+    <h1>
+      Faster Decisions.<br>
+      <span class="cyan">Safer Lives.</span>
+    </h1>
+
+    <p class="sub">
+      A disaster-response command dashboard combining hazard signals,
+      AI-assisted prioritization, route optimization and resource
+      deployment in one operational view.
+    </p>
+
+    <div class="actions">
+
+      <button class="btn primary"
+              onclick="runAnalysis()">
+        ⚛ Start Quantum Analysis
+      </button>
+
+      <button class="btn"
+              onclick="simulateAlert()">
+        🚨 Simulate Alert
+      </button>
+
+      <button class="btn"
+              onclick="reroute()">
+        ↻ Recalculate Route
+      </button>
+
+    </div>
+
+    <div class="muted" style="margin-top:18px">
+      Demo mode: quantum metrics are simulated interface values
+      for presentation/prototyping.
+    </div>
+
+  </div>
+
+
+  <div class="card hero-side">
+
+    <div class="eyebrow">
+      QUANTUM CORE
+    </div>
+
+    <div class="big" id="conv">
+      1.4s
+    </div>
+
+    <div class="muted">
+      Simulated annealing convergence
+    </div>
+
+    <div class="prog">
+      <i id="convbar"></i>
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    ">
+
+      <div>
+
+        <div class="value cyan" id="qbits">
+          128
+        </div>
+
+        <div class="muted">
+          QUBITS
+        </div>
+
+      </div>
+
+      <div>
+
+        <div class="value green" id="safe">
+          98.4%
+        </div>
+
+        <div class="muted">
+          ROUTE SAFETY
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="stats">
+
+  <div class="card stat">
+
+    <div class="muted">
+      ACTIVE EVACUEES
+    </div>
+
+    <div class="value">
+      3,480
+    </div>
+
+    <div class="green" style="font-size:11px">
+      ↑ 92% reached high ground
+    </div>
+
+  </div>
+
+
+  <div class="card stat">
+
+    <div class="muted">
+      DISPATCH FLEET
+    </div>
+
+    <div class="value">
+      42 / 48
+    </div>
+
+    <div class="cyan" style="font-size:11px">
+      APCs + drones + boats
+    </div>
+
+  </div>
+
+
+  <div class="card stat">
+
+    <div class="muted">
+      SUBMERGED CORRIDORS
+    </div>
+
+    <div class="value red">
+      19
+    </div>
+
+    <div class="orange" style="font-size:11px">
+      Reroute enforced
+    </div>
+
+  </div>
+
+
+  <div class="card stat">
+
+    <div class="muted">
+      SAFE HAVENS OPEN
+    </div>
+
+    <div class="value">
+      8
+    </div>
+
+    <div class="green" style="font-size:11px">
+      71% bed capacity
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="section two">
+
+  <div class="card panel">
+
+    <div class="title">
+
+      <h2>
+        ⚡ AI / QUANTUM RESPONSE PIPELINE
+      </h2>
+
+      <span class="muted">
+        End-to-end mission flow
+      </span>
+
+    </div>
+
+
+    <div class="pipeline">
+
+      <div class="node">
+        📡<br>
+        <b>Satellite + Sensors</b><br>
+        <span class="muted">ingest</span>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="node">
+        🤖<br>
+        <b>AI Analytics</b><br>
+        <span class="muted">classify</span>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="node">
+        ⚛️<br>
+        <b>Route Optimizer</b><br>
+        <span class="muted">solve</span>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="node">
+        🚑<br>
+        <b>Dispatch</b><br>
+        <span class="muted">respond</span>
+      </div>
+
+    </div>
+
+
+    <div class="routebox">
+
+      <div class="metric">
+
+        <span class="muted">
+          BEST ROUTE
+        </span>
+
+        <strong id="route">
+          2.8 km
+        </strong>
+
+        <span class="muted">
+          Ridge Bypass
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        <span class="muted">
+          ETA
+        </span>
+
+        <strong id="eta">
+          4 min
+        </strong>
+
+        <span class="muted">
+          projected arrival
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card panel">
+
+    <div class="title">
+
+      <h2>
+        🛰️ COMMAND TELEMETRY
+      </h2>
+
+      <span class="muted">
+        Live simulation
+      </span>
+
+    </div>
+
+    <div class="telemetry" id="telemetry">
+
+      [04:21:09] System online. Offline-ready mode enabled.<br>
+      [04:21:10] Satellite observation packet received.<br>
+      [04:21:11] Flood corridor scan completed.<br>
+      [04:21:12] AI risk model updated.<br>
+      [04:21:13] Awaiting commander action...
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="section two">
+
+  <div class="card panel">
+
+    <div class="title">
+
+      <h2>
+        🌧️ LIVE FLOOD SIMULATOR
+      </h2>
+
+      <span class="muted">
+        Dynamic hazard scenario
+      </span>
+
+    </div>
+
+
+    <div class="muted">
+      RAINFALL INTENSITY
+    </div>
+
+    <input
+      class="range"
+      id="rain"
+      type="range"
+      min="10"
+      max="180"
+      value="75"
+      oninput="updateRain()"
+    >
+
+
+    <div class="rainrow">
+
+      <span>
+        10 mm/h
+      </span>
+
+      <b id="rainValue" class="orange">
+        75 mm/h
+      </b>
+
+      <span>
+        180 mm/h
+      </span>
+
+    </div>
+
+
+    <div class="routebox">
+
+      <div class="metric">
+
+        <span class="muted">
+          SURGE
+        </span>
+
+        <strong id="surge">
+          +1.8m
+        </strong>
+
+        <span id="riskText" class="red">
+          HIGH RISK
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        <span class="muted">
+          SAFE ROUTE
+        </span>
+
+        <strong id="safeRoute">
+          2.8 km
+        </strong>
+
+        <span class="muted">
+          elevation-aware path
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button class="btn"
+              onclick="runAnalysis()">
+        ⚛ Optimize Safe Path
+      </button>
+
+      <button class="btn"
+              onclick="
+              document.getElementById('rain').value=130;
+              updateRain();
+              ">
+        🌊 Surge +0.5m
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="card panel">
+
+    <div class="radar">
+
+      <div class="zone z1"></div>
+
+      <div class="zone z2"></div>
+
+      <div class="route-line"></div>
+
+      <span class="beacon b1"></span>
+      <span class="beacon b2"></span>
+      <span class="beacon b3"></span>
+      <span class="beacon b4"></span>
+
+      <div style="
+        position:absolute;
+        left:14px;
+        top:12px;
+        color:#86a9bc;
+        font-size:10px;
+      ">
+        SECTOR 4 TACTICAL INUNDATION RADAR
+      </div>
+
+      <div style="
+        position:absolute;
+        right:14px;
+        bottom:12px;
+        color:var(--c);
+        font-size:10px;
+      ">
+        17°41'12.4"N 83°13'06.6"E
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="section two">
+
+  <div class="card panel">
+
+    <div class="title">
+
+      <h2>
+        📊 RESOURCE ALLOCATION
+      </h2>
+
+      <span class="muted">
+        Optimized deployment view
+      </span>
+
+    </div>
+
+
+    <div class="resource">
+
+      <div class="res">
+
+        <div class="reshead">
+          <b>🚑 Ambulances</b>
+          <span>18 / 20</span>
+        </div>
+
+        <div class="rbar">
+          <i style="width:90%"></i>
+        </div>
+
+        <span class="muted">
+          90% deployed
+        </span>
+
+      </div>
+
+
+      <div class="res">
+
+        <div class="reshead">
+          <b>🚤 Rescue Boats</b>
+          <span>6 / 8</span>
+        </div>
+
+        <div class="rbar">
+          <i style="width:75%"></i>
+        </div>
+
+        <span class="muted">
+          75% capacity
+        </span>
+
+      </div>
+
+
+      <div class="res">
+
+        <div class="reshead">
+          <b>💊 Medical Kits</b>
+          <span>340 / 400</span>
+        </div>
+
+        <div class="rbar">
+          <i style="width:85%"></i>
+        </div>
+
+        <span class="muted">
+          85% distributed
+        </span>
+
+      </div>
+
+
+      <div class="res">
+
+        <div class="reshead">
+          <b>🥫 Food Packs</b>
+          <span>1,250 / 1,500</span>
+        </div>
+
+        <div class="rbar">
+          <i style="width:83%"></i>
+        </div>
+
+        <span class="muted">
+          83% dispatched
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div style="margin-top:16px">
+
+      <div class="barrow">
+        <span>Ambulances</span>
+        <div class="bar">
+          <i style="width:90%"></i>
+        </div>
+        <b>90%</b>
+      </div>
+
+      <div class="barrow">
+        <span>Boats</span>
+        <div class="bar">
+          <i style="width:75%"></i>
+        </div>
+        <b>75%</b>
+      </div>
+
+      <div class="barrow">
+        <span>Medical</span>
+        <div class="bar">
+          <i style="width:85%"></i>
+        </div>
+        <b>85%</b>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card panel">
+
+    <div class="title">
+
+      <h2>
+        🚨 EMERGENCY ALERTS
+      </h2>
+
+      <button class="btn"
+              onclick="simulateAlert()">
+        + Simulate
+      </button>
+
+    </div>
+
+
+    <div class="alerts" id="alerts">
+
+      <div class="alert">
+
+        <div>🌊</div>
+
+        <div>
+          <b>North Causeway overtopping</b>
+          <br>
+          <small>
+            Water surge detected. Route rerouting active.
+          </small>
+        </div>
+
+        <small>2m</small>
+
+      </div>
+
+
+      <div class="alert">
+
+        <div>⚡</div>
+
+        <div>
+          <b>Central substation submerged</b>
+          <br>
+          <small>
+            Hospital safe-haven backup power engaged.
+          </small>
+        </div>
+
+        <small>8m</small>
+
+      </div>
+
+
+      <div class="alert">
+
+        <div>⚠️</div>
+
+        <div>
+          <b>Rapid silt accumulation</b>
+          <br>
+          <small>
+            Heavy mudflow; amphibious vehicles recommended.
+          </small>
+        </div>
+
+        <small>14m</small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="section card panel">
+
+  <div class="title">
+
+    <h2>
+      📈 QUANTUM VS CLASSICAL — DEMO BENCHMARK
+    </h2>
+
+    <span class="muted">
+      Illustrative UI values, not measured hardware results
+    </span>
+
+  </div>
+
+
+  <div class="barrow">
+
+    <span>
+      Classical Dijkstra
+    </span>
+
+    <div class="bar">
+      <i style="width:92%"></i>
+    </div>
+
+    <b>
+      18.4s
+    </b>
+
+  </div>
+
+
+  <div class="barrow">
+
+    <span>
+      Classical A*
+    </span>
+
+    <div class="bar">
+      <i style="width:48%"></i>
+    </div>
+
+    <b>
+      6.2s
+    </b>
+
+  </div>
+
+
+  <div class="barrow">
+
+    <span>
+      Q-Rescue Annealer
+    </span>
+
+    <div class="bar">
+      <i style="width:10%"></i>
+    </div>
+
+    <b>
+      1.3ms*
+    </b>
+
+  </div>
+
+
+  <div class="note">
+
+    *Replace these demo values with your own measured benchmark
+    before presenting them as real performance results.
+
+  </div>
+
+</section>
+
+
+<section class="section card panel">
+
+  <div class="title">
+
+    <h2>
+      🧠 AURA-7 AI CO-PILOT
+    </h2>
+
+    <span class="muted">
+      Decision support
+    </span>
+
+  </div>
+
+
+  <div style="
+    display:flex;
+    gap:12px;
+    align-items:center;
+  ">
+
+    <div style="font-size:32px">
+      🤖
+    </div>
+
+    <div>
+
+      <b id="copilot">
+        Ready Commander.
+      </b>
+
+      <br>
+
+      <span class="muted">
+        Atmospheric pressure is changing.
+        Run route optimization before dispatch.
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<div class="footer">
+
+  Q-RESCUE prototype • Quantum/disaster metrics in this demo
+  are simulated for UI and presentation purposes.
+
+</div>
+
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+let running = false;
+
+const $ = id => document.getElementById(id);
+
+
+function toast(message){
+
+  $("toast").textContent = message;
+
+  $("toast").style.display = "block";
+
+  setTimeout(() => {
+    $("toast").style.display = "none";
+  },2200);
+
+}
+
+
+function log(message){
+
+  const box = $("telemetry");
+
+  box.innerHTML +=
+    `<br>[${new Date().toLocaleTimeString()}] ${message}`;
+
+  box.scrollTop = box.scrollHeight;
+
+}
+
+
+function runAnalysis(){
+
+  if(running) return;
+
+  running = true;
+
+  const steps = [
+
+    "Initializing quantum core...",
+
+    "Receiving satellite data...",
+
+    "Scanning emergency requests...",
+
+    "Calculating candidate routes...",
+
+    "Optimizing safe route...",
+
+    "Preparing dispatch packet..."
+
+  ];
+
+  let i = 0;
+
+
+  const timer = setInterval(() => {
+
+    log(steps[i]);
+
+    $("convbar").style.width =
+      ((i + 1) / steps.length * 100) + "%";
+
+
+    if(i === steps.length - 1){
+
+      clearInterval(timer);
+
+      running = false;
+
+
+      $("conv").textContent =
+        (1.2 + Math.random() * .5).toFixed(1) + "s";
+
+
+      $("safe").textContent =
+        (97.5 + Math.random() * 1.2).toFixed(1) + "%";
+
+
+      $("copilot").textContent =
+        "Optimal ridge bypass identified. Dispatch can proceed in demo mode.";
+
+
+      log(
+        "Route locked: Ridge Bypass. Hazard intersections minimized."
+      );
+
+
+      toast(
+        "Quantum analysis simulation complete"
+      );
+
+    }
+
+    i++;
+
+  },420);
+
+}
+
+
+function updateRain(){
+
+  const r = +$("rain").value;
+
+  $("rainValue").textContent =
+    r + " mm/h";
+
+
+  const surge =
+    (.8 + r / 75).toFixed(1);
+
+
+  $("surge").textContent =
+    "+" + surge + "m";
+
+
+  const risk =
+    $("riskText");
+
+
+  if(r < 60){
+
+    risk.textContent =
+      "MODERATE RISK";
+
+    risk.className =
+      "orange";
+
+  }
+
+  else if(r < 120){
+
+    risk.textContent =
+      "HIGH RISK";
+
+    risk.className =
+      "red";
+
+  }
+
+  else{
+
+    risk.textContent =
+      "EXTREME RISK";
+
+    risk.className =
+      "red";
+
+  }
+
+
+  const km =
+    (2.2 + r / 190).toFixed(1);
+
+
+  $("safeRoute").textContent =
+    km + " km";
+
+  $("route").textContent =
+    km + " km";
+
+
+  log(
+    `Rainfall scenario updated to ${r} mm/h; surge estimate +${surge}m.`
+  );
+
+}
+
+
+function reroute(){
+
+  const km =
+    (2.4 + Math.random() * 1.1).toFixed(1);
+
+  const eta =
+    Math.max(3,Math.round(7 - km));
+
+
+  $("route").textContent =
+    km + " km";
+
+  $("safeRoute").textContent =
+    km + " km";
+
+  $("eta").textContent =
+    eta + " min";
+
+
+  log(
+    `Dynamic reroute calculated: ${km} km, ETA ${eta} min.`
+  );
+
+
+  toast(
+    "Safe route recalculated"
+  );
+
+}
+
+
+function simulateAlert(){
+
+  const alerts = [
+
+    [
+      "📡",
+      "SOS beacon cluster detected",
+      "12 distress beacons correlated in Sector 4."
+    ],
+
+    [
+      "🌧️",
+      "Rainfall surge detected",
+      "Hazard model recommends immediate route review."
+    ],
+
+    [
+      "🚑",
+      "Medical priority request",
+      "Critical supply delivery requested at Safe Haven 3."
+    ]
+
+  ];
+
+
+  const a =
+    alerts[Math.floor(Math.random() * alerts.length)];
+
+
+  const element =
+    document.createElement("div");
+
+
+  element.className =
+    "alert";
+
+
+  element.innerHTML = `
+
+    <div>
+      ${a[0]}
+    </div>
+
+    <div>
+
+      <b>
+        ${a[1]}
+      </b>
+
+      <br>
+
+      <small>
+        ${a[2]}
+      </small>
+
+    </div>
+
+    <small>
+      now
+    </small>
+
+  `;
+
+
+  $("alerts").prepend(element);
+
+
+  log(
+    "ALERT: " + a[1]
+  );
+
+
+  toast(
+    "New emergency alert added"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
